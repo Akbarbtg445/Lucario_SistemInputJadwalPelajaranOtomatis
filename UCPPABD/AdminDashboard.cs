@@ -15,7 +15,7 @@ namespace UCPPABD
     {
         string connectionString = @"Data Source=AOZORA\AKBARRZHO;Initial Catalog=UCP_PABD_Jadwal;Integrated Security=True;TrustServerCertificate=True";
 
-        // Tambahkan dua variabel ini untuk Data Binding
+        // Menambahkan dua variabel ini untuk Data Binding
         private BindingSource bindingSource = new BindingSource();
 
 
