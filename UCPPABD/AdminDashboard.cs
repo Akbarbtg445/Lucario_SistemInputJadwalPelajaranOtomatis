@@ -13,19 +13,11 @@ namespace UCPPABD
 {
     public partial class AdminDashboard : Form
     {
-        // String koneksi ke database SQL Server
         string connectionString = @"Data Source=AOZORA\AKBARRZHO;Initial Catalog=UCP_PABD_Jadwal;Integrated Security=True;TrustServerCertificate=True";
 
-        public AdminDashboard()
-        {
-            InitializeComponent();
-            tampilkanData();      // Load tabel jadwal saat dibuka
-            isiPilihanComboBox(); // Load data Guru, Mapel, dan Kelas ke dropdown
-                                  // Set default jam 07:00 pagi
-            DateTime hariIni = DateTime.Now;
-            dtpMulai.Value = new DateTime(hariIni.Year, hariIni.Month, hariIni.Day, 7, 0, 0);
-            dtpSelesai.Value = new DateTime(hariIni.Year, hariIni.Month, hariIni.Day, 8, 0, 0);
-        }
+        // Tambahkan dua variabel ini untuk Data Binding
+        private BindingSource bindingSource = new BindingSource();
+
 
         // --- 1. FUNGSI MENAMPILKAN DATA KE TABEL (READ) ---
         void tampilkanData()

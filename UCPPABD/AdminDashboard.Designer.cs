@@ -354,7 +354,7 @@
             this.bindingNavigator1.MovePreviousItem = this.bindingNavigatorMovePreviousItem;
             this.bindingNavigator1.Name = "bindingNavigator1";
             this.bindingNavigator1.PositionItem = this.bindingNavigatorPositionItem;
-            this.bindingNavigator1.Size = new System.Drawing.Size(1107, 33);
+            this.bindingNavigator1.Size = new System.Drawing.Size(1183, 33);
             this.bindingNavigator1.TabIndex = 4;
             this.bindingNavigator1.Text = "bindingNavigator1";
             // 
@@ -448,7 +448,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1107, 630);
+            this.ClientSize = new System.Drawing.Size(1183, 630);
             this.Controls.Add(this.bindingNavigator1);
             this.Controls.Add(this.btnLogoutA);
             this.Controls.Add(this.tabeljadwalsaatini);
