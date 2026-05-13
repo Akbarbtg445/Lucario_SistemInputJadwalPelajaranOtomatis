@@ -48,8 +48,6 @@
             this.btnCetak = new System.Windows.Forms.Button();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
             this.lblStatus = new System.Windows.Forms.Label();
-            this.label12 = new System.Windows.Forms.Label();
-            this.label11 = new System.Windows.Forms.Label();
             this.lblSisa = new System.Windows.Forms.Label();
             this.lblTerisi = new System.Windows.Forms.Label();
             this.lblMax = new System.Windows.Forms.Label();
@@ -189,6 +187,7 @@
             this.btnSimpan.TabIndex = 7;
             this.btnSimpan.Text = "Simpan";
             this.btnSimpan.UseVisualStyleBackColor = true;
+            this.btnSimpan.Click += new System.EventHandler(this.btnSimpan_Click);
             // 
             // label7
             // 
@@ -256,13 +255,11 @@
             this.btnCetak.TabIndex = 0;
             this.btnCetak.Text = "Cetak";
             this.btnCetak.UseVisualStyleBackColor = true;
-            this.btnCetak.Click += new System.EventHandler(this.button3_Click);
+            this.btnCetak.Click += new System.EventHandler(this.btnCetak_Click);
             // 
             // groupBox3
             // 
             this.groupBox3.Controls.Add(this.lblStatus);
-            this.groupBox3.Controls.Add(this.label12);
-            this.groupBox3.Controls.Add(this.label11);
             this.groupBox3.Controls.Add(this.lblSisa);
             this.groupBox3.Controls.Add(this.lblTerisi);
             this.groupBox3.Controls.Add(this.lblMax);
@@ -283,26 +280,6 @@
             this.lblStatus.Size = new System.Drawing.Size(44, 16);
             this.lblStatus.TabIndex = 5;
             this.lblStatus.Text = "Status";
-            // 
-            // label12
-            // 
-            this.label12.AutoSize = true;
-            this.label12.Location = new System.Drawing.Point(228, 119);
-            this.label12.Name = "label12";
-            this.label12.Size = new System.Drawing.Size(45, 16);
-            this.label12.TabIndex = 4;
-            this.label12.Text = "Penuh";
-            this.label12.Click += new System.EventHandler(this.label12_Click);
-            // 
-            // label11
-            // 
-            this.label11.AutoSize = true;
-            this.label11.Location = new System.Drawing.Point(131, 119);
-            this.label11.Name = "label11";
-            this.label11.Size = new System.Drawing.Size(62, 16);
-            this.label11.TabIndex = 3;
-            this.label11.Text = "Tersedia";
-            this.label11.Click += new System.EventHandler(this.label11_Click);
             // 
             // lblSisa
             // 
@@ -382,8 +359,6 @@
         private System.Windows.Forms.Label lblMax;
         private System.Windows.Forms.Label lblSisa;
         private System.Windows.Forms.Label lblTerisi;
-        private System.Windows.Forms.Label label11;
-        private System.Windows.Forms.Label label12;
         private System.Windows.Forms.Label lblStatus;
         public System.Windows.Forms.Label lblNIS;
         public System.Windows.Forms.Label lblNama;
