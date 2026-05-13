@@ -28,29 +28,9 @@ namespace UCPPABD
 
         // --- 1. FUNGSI MENAMPILKAN DATA KE TABEL (READ) ---
         void tampilkanData()
-        {
-            using (SqlConnection conn = new SqlConnection(connectionString))
-            {
-                try
-                {
-                    conn.Open();
-                    // Query JOIN agar muncul Nama, bukan ID yang membingungkan
-                    string query = @"SELECT j.idJadwal, j.hari, j.jamMulai, j.jamSelesai, j.idKelas, 
-                             m.namaMapel AS MataPelajaran, g.nama AS NamaGuru 
-                             FROM Jadwal j 
-                             JOIN MataPelajaran m ON j.idKeahlian = m.idMapel 
-                             JOIN Guru g ON j.idGuru = g.idGuru";
 
-                    SqlDataAdapter da = new SqlDataAdapter(query, conn);
-                    DataTable dt = new DataTable();
-                    da.Fill(dt);
-                    dgvJadwal.DataSource = dt;
-                }
-                catch (Exception ex) { MessageBox.Show("Gagal memuat tabel: " + ex.Message); }
-            }
-        }
 
-        // --- 2. FUNGSI ISI PILIHAN DROPDOWN (OTOMATIS DARI DATABASE) ---
+        // --- 2. FUNGSI ISI PILIHAN DROPDOWN 
         void isiPilihanComboBox()
         {
             using (SqlConnection conn = new SqlConnection(connectionString))
