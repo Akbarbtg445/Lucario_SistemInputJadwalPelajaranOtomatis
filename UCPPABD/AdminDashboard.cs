@@ -195,6 +195,15 @@ namespace UCPPABD
                     cmd.Parameters.AddWithValue("@namaMapel", cmbMapel.Text);
                     cmd.Parameters.AddWithValue("@namaGuru", cmbGuru.Text);
 
+                    conn.Open();
+                    cmd.ExecuteNonQuery();
+                    MessageBox.Show("Jadwal Berhasil Di Update!", "Sukses", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    tampilkanData(); // Refresh DataGridView
+                }
+                catch (Exception ex) { MessageBox.Show("Error Simpan: " + ex.Message); }
+            }
+        }
+
         // --- 6. TOMBOL HAPUS (DELETE) ---
         private void button3_Click(object sender, EventArgs e)
         {
