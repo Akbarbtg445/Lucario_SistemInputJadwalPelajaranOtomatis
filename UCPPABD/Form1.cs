@@ -48,7 +48,17 @@ namespace UCPPABD
                         // Bahaya: Input langsung dimasukkan ke dalam teks kueri menggunakan tanda kutip satu (' ')
                         query = "SELECT username FROM " + tabel + " WHERE username='" + user + "' AND password='" + pass + "'";
                     }
+                    else
+                    {
+                        // Bahaya: Input langsung dimasukkan ke dalam teks kueri
+                        query = "SELECT nama, NIS FROM " + tabel + " WHERE username='" + user + "' AND password='" + pass + "'";
+                    }
 
+                    SqlCommand cmd = new SqlCommand(query, conn);
+
+                    // HAPUS ATAU JADIKAN KOMENTAR BARIS PARAMETER DI BAWAH INI
+                    // cmd.Parameters.AddWithValue("@user", user);
+                    // cmd.Parameters.AddWithValue("@pass", pass);
 
                     SqlDataReader reader = cmd.ExecuteReader();
 
