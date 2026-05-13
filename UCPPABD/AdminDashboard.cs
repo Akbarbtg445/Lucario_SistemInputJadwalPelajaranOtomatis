@@ -132,31 +132,11 @@ namespace UCPPABD
             {
                 try
                 {
-                    conn.Open();
-                    string query = "INSERT INTO Jadwal (hari, jamMulai, jamSelesai, idKelas, idKeahlian, idGuru) " +
-                                   "VALUES (@hari, @mulai, @selesai, @kelas, " +
-                                   "(SELECT TOP 1 idMapel FROM MataPelajaran WHERE namaMapel = @mapel), " +
-                                   "(SELECT TOP 1 idGuru FROM Guru WHERE nama = @guru))";
+                    // Memanggil STORED PROCEDURE
+                    SqlCommand cmd = new SqlCommand("sp_InsertJadwal", conn);
+                    cmd.CommandType = CommandType.StoredProcedure; // Wajib ditambahkan
 
-                    SqlCommand cmd = new SqlCommand(query, conn);
-                    cmd.Parameters.AddWithValue("@hari", cmbHari.Text);
-                    cmd.Parameters.AddWithValue("@mulai", dtpMulai.Value.ToString("HH:mm:ss"));
-                    cmd.Parameters.AddWithValue("@selesai", dtpSelesai.Value.ToString("HH:mm:ss"));
-                    cmd.Parameters.AddWithValue("@kelas", cmbKelas.Text);
-                    cmd.Parameters.AddWithValue("@mapel", cmbMapel.Text);
-                    cmd.Parameters.AddWithValue("@guru", cmbGuru.Text);
 
-                    cmd.ExecuteNonQuery();
-                    MessageBox.Show("Jadwal Berhasil Ditambahkan!", "Sukses", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                    tampilkanData();
-                    resetForm();
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show("Error Simpan: " + ex.Message);
-                }
-            }
-        }
 
         // --- 5. TOMBOL UBAH (UPDATE) ---
         private void button2_Click(object sender, EventArgs e)
