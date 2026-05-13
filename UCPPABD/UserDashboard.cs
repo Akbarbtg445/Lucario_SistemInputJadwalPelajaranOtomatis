@@ -88,7 +88,7 @@ namespace UCPPABD
             }
         }
 
-        // --- 2. FUNGSI TAMPILKAN DATA JADWAL ---
+        // --- 2. FUNGSI TAMPILKAN DATA JADWAL (PAKAI VIEW) ---
         void tampilkanData()
         {
             using (SqlConnection conn = new SqlConnection(connectionString))
@@ -96,12 +96,8 @@ namespace UCPPABD
                 try
                 {
                     conn.Open();
-                    // Menggunakan JOIN untuk mengambil namaMapel dari tabel MataPelajaran
-                    string query = @"SELECT j.idJadwal, j.hari, j.jamMulai, j.jamSelesai, j.idKelas, m.namaMapel AS MataPelajaran, j.idGuru 
-                                     FROM Jadwal j 
-                                     JOIN MataPelajaran m ON j.idKeahlian = m.idMapel";
-
-                    SqlDataAdapter da = new SqlDataAdapter(query, conn);
+                    // Menggunakan VIEW (Poin 2)
+                    SqlDataAdapter da = new SqlDataAdapter("SELECT * FROM vw_JadwalPelajaran", conn);
                     DataTable dt = new DataTable();
                     da.Fill(dt);
                     dgvJadwal.DataSource = dt;
@@ -111,7 +107,7 @@ namespace UCPPABD
         }
 
         // --- 3. TOMBOL CARI ---
-        // --- 3. TOMBOL CARI ---
+        // --- 3. TOMBOL CARI (PAKAI STORED PROCEDURE) ---
         private void button1_Click(object sender, EventArgs e)
         {
             if (string.IsNullOrEmpty(cmbKelas.Text)) return;
@@ -121,13 +117,9 @@ namespace UCPPABD
                 try
                 {
                     conn.Open();
-                    // Sama seperti di atas, tambahkan JOIN
-                    string query = @"SELECT j.idJadwal, j.hari, j.jamMulai, j.jamSelesai, j.idKelas, m.namaMapel AS MataPelajaran, j.idGuru 
-                                     FROM Jadwal j 
-                                     JOIN MataPelajaran m ON j.idKeahlian = m.idMapel 
-                                     WHERE j.idKelas = @kelas";
-
-                    SqlCommand cmd = new SqlCommand(query, conn);
+                    // Menggunakan SP Cari 
+                    SqlCommand cmd = new SqlCommand("sp_SearchJadwal", conn);
+                    cmd.CommandType = CommandType.StoredProcedure;
                     cmd.Parameters.AddWithValue("@kelas", cmbKelas.Text);
 
                     SqlDataAdapter da = new SqlDataAdapter(cmd);
@@ -139,7 +131,6 @@ namespace UCPPABD
             }
         }
 
-        // --- 4. KLIK TABEL (SYNC KE FORM EDIT & CEK KAPASITAS) ---
         // --- 4. KLIK TABEL (SYNC KE FORM EDIT & CEK KAPASITAS) ---
         private void dgvJadwal_CellClick(object sender, DataGridViewCellEventArgs e)
         {
@@ -200,8 +191,8 @@ namespace UCPPABD
             }
         }
 
-        // --- 5. SIMPAN KE JADWAL PRIBADI (TOMBOL SIMPAN) ---
         // --- 5. FUNGSI UPDATE JADWAL ---
+        // --- 5. FUNGSI UPDATE JADWAL (PAKAI STORED PROCEDURE) ---
         private void btnSimpan_Click(object sender, EventArgs e)
         {
             if (dgvJadwal.CurrentRow == null)
@@ -210,7 +201,6 @@ namespace UCPPABD
                 return;
             }
 
-            // --- 1. Validasi Batasan Waktu (Mirip Admin) ---
             TimeSpan waktuMulai = dtpMulai.Value.TimeOfDay;
             TimeSpan waktuSelesai = dtpSelesai.Value.TimeOfDay;
 
@@ -220,46 +210,34 @@ namespace UCPPABD
                 return;
             }
 
-            TimeSpan jamBuka = new TimeSpan(7, 0, 0); // Jam 07:00
-            TimeSpan jamTutup = new TimeSpan(15, 0, 0); // Jam 15:00
+            TimeSpan jamBuka = new TimeSpan(7, 0, 0);
+            TimeSpan jamTutup = new TimeSpan(15, 0, 0);
             if (waktuMulai < jamBuka || waktuSelesai > jamTutup)
             {
                 MessageBox.Show("Jadwal harus berada pada jam kerja sekolah (07:00 - 15:00)!", "Di Luar Jam", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
 
-            // --- 2. Proses UPDATE ke Database ---
-            // --- 2. Proses UPDATE ke Database ---
             using (SqlConnection conn = new SqlConnection(connectionString))
             {
                 try
                 {
-                    conn.Open();
                     string idJadwal = dgvJadwal.CurrentRow.Cells["idJadwal"].Value.ToString();
 
-                    // 1. CARI ID MAPEL BERDASARKAN NAMA YANG DIPILIH DI COMBOBOX
-                    string idKeahlianBaru = "1"; // Default aman
-                    SqlCommand cmdCari = new SqlCommand("SELECT idMapel FROM MataPelajaran WHERE namaMapel = @nama", conn);
-                    cmdCari.Parameters.AddWithValue("@nama", cmbMapel.Text);
-                    object resMapel = cmdCari.ExecuteScalar();
-                    if (resMapel != null)
-                    {
-                        idKeahlianBaru = resMapel.ToString();
-                    }
+                    // Menggunakan SP Update 
+                    SqlCommand cmd = new SqlCommand("sp_UpdateJadwalUser", conn);
+                    cmd.CommandType = CommandType.StoredProcedure;
 
-                    // 2. LAKUKAN UPDATE (Tambahkan idKeahlian ke query)
-                    string query = "UPDATE Jadwal SET jamMulai = @mulai, jamSelesai = @selesai, idKelas = @kelas, idKeahlian = @keahlian WHERE idJadwal = @id";
-                    SqlCommand cmd = new SqlCommand(query, conn);
+                    cmd.Parameters.AddWithValue("@idJadwal", idJadwal);
                     cmd.Parameters.AddWithValue("@mulai", dtpMulai.Value.ToString("HH:mm:ss"));
                     cmd.Parameters.AddWithValue("@selesai", dtpSelesai.Value.ToString("HH:mm:ss"));
                     cmd.Parameters.AddWithValue("@kelas", cmbPilihkelas.Text);
-                    cmd.Parameters.AddWithValue("@keahlian", idKeahlianBaru); // Menyimpan ID Mapel yang baru
-                    cmd.Parameters.AddWithValue("@id", idJadwal);
+                    cmd.Parameters.AddWithValue("@namaMapel", cmbMapel.Text);
 
+                    conn.Open();
                     cmd.ExecuteNonQuery();
                     MessageBox.Show("Data Jadwal Berhasil Diupdate!", "Sukses", MessageBoxButtons.OK, MessageBoxIcon.Information);
 
-                    // Refresh tampilan tabel agar perubahannya langsung muncul
                     tampilkanData();
                 }
                 catch (Exception ex)
