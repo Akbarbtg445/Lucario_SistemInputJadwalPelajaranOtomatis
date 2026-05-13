@@ -224,6 +224,10 @@ namespace UCPPABD
                         // 2. Beritahu program bahwa ini adalah Stored Procedure
                         cmd.CommandType = CommandType.StoredProcedure;
 
+                        // 3. Masukkan parameter (pastikan nama parameternya sama dengan yang di SQL Server)
+                        cmd.Parameters.AddWithValue("@idJadwal", id);
+
+
 
         // --- 7. TOMBOL CETAK (EKSPOR KE CSV/EXCEL) ---
         private void button4_Click(object sender, EventArgs e)
