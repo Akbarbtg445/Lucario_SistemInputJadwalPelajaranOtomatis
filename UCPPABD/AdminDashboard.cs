@@ -100,6 +100,23 @@ namespace UCPPABD
                 return;
             }
 
+            TimeSpan waktuMulai = dtpMulai.Value.TimeOfDay;
+            TimeSpan waktuSelesai = dtpSelesai.Value.TimeOfDay;
+
+            if (waktuSelesai <= waktuMulai)
+            {
+                MessageBox.Show("Jam Selesai harus lebih besar dari Jam Mulai!", "Kesalahan Waktu", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+
+            TimeSpan jamBuka = new TimeSpan(7, 0, 0);
+            TimeSpan jamTutup = new TimeSpan(15, 0, 0);
+            if (waktuMulai < jamBuka || waktuSelesai > jamTutup)
+            {
+                MessageBox.Show("Jadwal harus berada pada jam kerja sekolah (07:00 - 15:00)!", "Di Luar Jam", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
             using (SqlConnection conn = new SqlConnection(connectionString))
             {
                 try
@@ -138,6 +155,23 @@ namespace UCPPABD
             if (cmbHari.Text == "" || cmbKelas.Text == "" || cmbMapel.Text == "" || cmbGuru.Text == "")
             {
                 MessageBox.Show("Data tidak boleh kosong saat melakukan update!", "Peringatan", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            TimeSpan waktuMulai = dtpMulai.Value.TimeOfDay;
+            TimeSpan waktuSelesai = dtpSelesai.Value.TimeOfDay;
+
+            if (waktuSelesai <= waktuMulai)
+            {
+                MessageBox.Show("Jam Selesai harus lebih besar dari Jam Mulai!", "Kesalahan Waktu", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+
+            TimeSpan jamBuka = new TimeSpan(7, 0, 0);
+            TimeSpan jamTutup = new TimeSpan(15, 0, 0);
+            if (waktuMulai < jamBuka || waktuSelesai > jamTutup)
+            {
+                MessageBox.Show("Jadwal harus berada pada jam kerja sekolah (07:00 - 15:00)!", "Di Luar Jam", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
 
