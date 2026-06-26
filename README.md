@@ -25,3 +25,4 @@ Karena logika `'1'='1'` adalah absolut/selalu **TRUE** (Benar), maka klausa WHER
 ### 4. Pencegahan (Mitigation) - Defense Strategy
 Untuk memperbaiki celah ini di dunia nyata, pengembang harus menggunakan **Parameterized Queries** dari ADO.NET (seperti `cmd.Parameters.AddWithValue("@user", user);`), sehingga input dari pengguna akan diperlakukan murni sebagai "nilai data" dan bukan sebagai "perintah SQL".
 update 1  
+update 2  
