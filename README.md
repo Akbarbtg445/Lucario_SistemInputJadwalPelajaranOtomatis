@@ -1,59 +1,76 @@
-Skenario Implementasi SQL Injection (UCP 2)
+# 📚 Sistem Input Jadwal Pelajaran Otomatis
 
-Pada aplikasi ini, kerentanan SQL Injection sengaja diimplementasikan pada **Form1 (Form Login)** untuk mendemonstrasikan celah keamanan *Authentication Bypass*.
+Aplikasi desktop berbasis **Windows Forms (C#)** untuk mengelola jadwal pelajaran sekolah secara otomatis. Dibangun menggunakan Visual Studio dengan koneksi database MySQL dan laporan menggunakan SAP Crystal Reports.
 
-1. Titik Kerentanan (Vulnerability Point)
-Kerentanan terdapat pada logika pembentukan query di `Form1.cs` baris pengecekan login Admin. Query dibentuk menggunakan penggabungan string (*string concatenation*) tanpa sanitasi atau `Parameterized Query`, seperti berikut:
-`query = "SELECT username FROM Admin WHERE username='" + user + "' AND password='" + pass + "'";`
+---
 
-2. Skenario Serangan (Attack Scenario)
-Penyerang tidak mengetahui *username* maupun *password* Admin, tetapi ingin masuk ke dalam `AdminDashboard`.
+## 🖥️ Tampilan Aplikasi
 
-Langkah-langkah Serangan:
-1. Penyerang membuka aplikasi dan memilih Role: **Admin**.
-2. Pada kolom **Username**, penyerang memasukkan *payload* injeksi berikut: 
-   `' OR '1'='1`
-3. Pada kolom **Password**, penyerang mengetikkan teks acak (misal: `123`).
-4. Klik tombol **Login**.
+### 1. Form Login
+Pengguna dapat login sebagai **Admin** atau **Siswa** menggunakan username dan password yang terdaftar di database.
 
-3. Mengapa Ini Berhasil? (How it works)
-Ketika *payload* disisipkan, struktur query di *backend* (SQL Server) akan berubah dan dieksekusi menjadi seperti ini:
-`SELECT username FROM Admin WHERE username='' OR '1'='1' AND password='123'`
+### 2. Dashboard Administrator
+Admin dapat mengelola seluruh data jadwal pelajaran, termasuk:
+- Input jadwal berdasarkan hari, kelas, mata pelajaran, guru, jam mulai dan jam selesai
+- Melihat statistik jumlah jadwal per hari dalam bentuk grafik batang
+- Import data guru dari file Excel
+- Tambah, ubah, hapus, dan cetak jadwal
+- Melihat daftar jadwal aktif secara lengkap
 
-Karena logika `'1'='1'` adalah absolut/selalu **TRUE** (Benar), maka klausa WHERE akan mengabaikan pengecekan *password*. SQL Server akan mengembalikan baris pertama dari tabel Admin, sehingga penyerang berhasil *login* tanpa kredensial yang sah.
+### 3. Dashboard Siswa
+Siswa dapat:
+- Mencari jadwal berdasarkan kelas
+- Melihat jadwal pelajaran lengkap (hari, jam, mata pelajaran, guru)
+- Mengatur preferensi waktu pelajaran
+- Melihat kapasitas dan sisa kuota kelas
+- Mencetak jadwal pelajaran pribadi
 
-### 4. Pencegahan (Mitigation) - Defense Strategy
-Untuk memperbaiki celah ini di dunia nyata, pengembang harus menggunakan **Parameterized Queries** dari ADO.NET (seperti `cmd.Parameters.AddWithValue("@user", user);`), sehingga input dari pengguna akan diperlakukan murni sebagai "nilai data" dan bukan sebagai "perintah SQL".
-update 1  
-update 2  
-update 3  
-update 4  
-update 5  
-update 6  
-update 7  
-update 8  
-update 9  
-update 10  
-update 11  
-update 12  
-update 13  
-update 14  
-update 15  
-update 16  
-update 17  
-update 18  
-update 19  
-update 20  
-update 21  
-update 22  
-update 23  
-update 24  
-update 25  
-update 26  
-update 27  
-update 28  
-update 29  
-update 30  
-update 31  
-update 32  
-update 33  
+### 4. Laporan
+Laporan jadwal pelajaran dapat dicetak dalam format Crystal Reports, menampilkan informasi lengkap jadwal beserta tanggal cetak.
+
+---
+
+## ⚙️ Teknologi yang Digunakan
+
+| Teknologi | Keterangan |
+|---|---|
+| C# Windows Forms | Bahasa pemrograman dan framework UI |
+| Visual Studio 2022 | IDE pengembangan |
+| MySQL | Database penyimpanan data |
+| SAP Crystal Reports | Cetak laporan |
+| Microsoft Excel | Import data guru |
+
+---
+
+## 🚀 Cara Instalasi
+
+### Prasyarat
+- Visual Studio 2022
+- MySQL Server
+- SAP Crystal Reports Runtime untuk Visual Studio
+- .NET Framework 4.7.2 atau lebih baru
+
+### Langkah-langkah
+
+**1. Clone repository ini:**
+```bash
+git clone https://github.com/Akbarbtg445/Lucario_SistemInputJadwalPelajaranOtomatis.git
+```
+
+**2. Import database:**
+- Buka MySQL dan jalankan file `database_setup.sql` yang tersedia di root folder
+
+**3. Konfigurasi koneksi database:**
+- Buka aplikasi, klik **Atur Server Database** pada form login
+- Masukkan host, port, username, dan password MySQL kamu
+
+**4. Buka project di Visual Studio:**
+- Buka file `UCPPABD.sln`
+- Build solution (Ctrl+Shift+B)
+- Jalankan aplikasi (F5)
+
+---
+
+## 👤 Akun Default
+
+| Role | Username |
